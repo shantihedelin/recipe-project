@@ -8,19 +8,15 @@
 
 // - Emelie: Kunna radera ett recept så det inte syns längre i applikationen.
 
-// - Shanti: Kunna ändra/redigera ett recept
-
 // Emelie
 // Här är min kod
 
 //Adam
 
 let recipeList = document.getElementById("recipeList");
-// flyttar ut deklareringen av recipes så det blir globalt
 let recipes = [];
 let savedRecipes = [];
 let recipeForm = document.getElementById("form");
-
 let recipeTitleInput = document.getElementById("title");
 let instructionsInput = document.getElementById("instructions");
 let ingredientsInput = document.getElementById("ingredients");
@@ -34,11 +30,16 @@ async function fetchData() {
 
   console.log(recipes);
 
-  //TODO: om man redigerar, så ta bort knappen "add recipe"
+  recipes.forEach((recipe) => {
+    renderRecipe(recipe);
+  });
+}
 
-  recipes.forEach((recipe, index) => {
+function renderRecipe(recipe) {
     let recipeElement = document.createElement("div");
-    recipeElement.setAttribute("data-index", index);
+
+  //TODO: edit button på nya skapade recept?
+
 
     recipeElement.innerHTML = `
     <h3>${recipe.title}</h3>
@@ -57,40 +58,41 @@ async function fetchData() {
    <button class="edit-btn">Edit</button>
     `;
 
+    recipeElement
+      .querySelector(".edit-btn")
+      .addEventListener("click", function () {
+        editRecipe(recipe, recipeElement);
+      });
+
     recipeList.appendChild(recipeElement);
-  });
+  };
 
-  document.querySelectorAll(".edit-btn").forEach((button) => {
-    button.addEventListener("click", function () {
-      let recipeElement = this.parentElement;
-      let index = recipeElement.getAttribute("data-index");
-      editRecipe(recipes[index], index);
-    });
-  });
-}
 
-function editRecipe(recipe, index) {
+function editRecipe(recipe, recipeElement) {
   document.getElementById("title").value = recipe.title;
   document.getElementById("ingredients").value = recipe.ingredients.join(", ");
   document.getElementById("instructions").value = recipe.instructions;
 
+  let addRecipeBtn = document.getElementById("submitBtn");
+  addRecipeBtn.style.display = "none"; 
+
+  let existingSaveBtn = document.getElementById("saveBtn");
+  if (existingSaveBtn) {
+    existingSaveBtn.remove();
+  }
+
   let saveBtn = document.createElement("button");
   saveBtn.textContent = "Save";
   saveBtn.setAttribute("id", "saveBtn");
-
-  let form = document.getElementById("form");
-  form.appendChild(saveBtn);
+  recipeForm.appendChild(saveBtn);
 
   saveBtn.addEventListener("click", function (event) {
     event.preventDefault();
 
-    recipe.title = document.getElementById("title").value;
-    recipe.ingredients = document
-      .getElementById("ingredients")
-      .value.split(", ");
-    recipe.instructions = document.getElementById("instructions").value;
+    recipe.title = recipeTitleInput.value;
+    recipe.ingredients = ingredientsInput.value.split(", ");
+    recipe.instructions = instructionsInput.value;
 
-    let recipeElement = document.querySelector(`[data-index='${index}']`);
     recipeElement.innerHTML = `
       <h3>${recipe.title}</h3>
       <p>Ingredients: </p>
@@ -104,10 +106,17 @@ function editRecipe(recipe, index) {
       <button class="edit-btn">Edit</button>
     `;
 
-    saveBtn.remove();
+    // en ny eventlyssnare till den nya edit
+    // knappen som följer med efter att man har editat
+    recipeElement
+      .querySelector(".edit-btn")
+      .addEventListener("click", function () {
+        editRecipe(recipe, recipeElement);
+      });
 
+    saveBtn.remove();
+    addRecipeBtn.style.display = "block";
     form.reset();
-    console.log(recipes);
   });
 }
 
