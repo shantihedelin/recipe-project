@@ -18,6 +18,13 @@
 //Adam
 
 let recipeList = document.getElementById("recipeList");
+let savedRecipes = [];
+let recipeForm = document.getElementById("form");
+
+let recipeTitleInput = document.getElementById("title");
+let instructionsInput = document.getElementById("instructions");
+let ingredientsInput = document.getElementById("ingredients");
+let imageInput = document.getElementById("image");
 
 async function fetchData() {
   let res = await fetch("./recipes.json");
@@ -32,6 +39,7 @@ async function fetchData() {
 
     recipeElement.innerHTML = `
     <h3>${recipe.title}</h3>
+    <img src=${recipe.imageURL}>
     <p>Ingredients: </p>
     <ul>
         ${recipe.ingredients
@@ -46,6 +54,46 @@ async function fetchData() {
 }
 
 fetchData();
+
+function renderSaved() {
+  savedRecipes.forEach((recipe) => {
+    let recipeElement = document.createElement("div");
+
+    recipeElement.innerHTML = `
+        <h3>${recipe.title}</h3>
+        <img src=${recipe.imageURL}>
+        <p>Ingredients: </p>
+        <ul>
+            ${recipe.ingredients
+              .map((ingredient) => `<li>${ingredient}</li>`)
+              .join("")}
+        </ul>
+        <p>Instructions:</p>
+        <p>${recipe.instructions}</p>
+        `;
+    recipeList.appendChild(recipeElement);
+  });
+}
+
+recipeForm.addEventListener("submit", function (e) {
+  e.preventDefault();
+  let recipeIng = ingredientsInput.value.split(/\r?\n/);
+  let recipeIns = instructionsInput.value.split(/\r?\n/);
+
+  let recipeObject = {
+    id: Math.floor(Math.random() * 100),
+    imageURL: imageInput.value,
+    ingredients: recipeIng,
+    instructions: recipeIns,
+    title: recipeTitleInput.value,
+  };
+
+  recipeForm.reset();
+
+  savedRecipes.push(recipeObject);
+  renderSaved();
+  console.log(savedRecipes);
+});
 
 //Petra
 
