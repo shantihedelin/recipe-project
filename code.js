@@ -10,8 +10,6 @@
 
 // - Shanti: Kunna ändra/redigera ett recept
 
-// - Om det finns tid: Shanti: localstorage - behåll recepten på sidan ???
-
 // Emelie
 // Här är min kod
 
@@ -87,14 +85,13 @@ function editRecipe(recipe, index) {
     saveBtn.remove();
 
     form.reset();
+    console.log(recipes);
   });
 }
 
 fetchData();
 
 //Petra
-
-//Shanti (redigera recept)
 
 // Extra >>>>>>>>>>>>>>> Uttråkad Emelie
 // söka efter recept
