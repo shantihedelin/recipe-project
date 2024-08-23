@@ -26,6 +26,23 @@ async function fetchData() {
   let recipes = result.recipes;
 
   console.log(recipes);
+
+  recipes.forEach((recipe) => {
+    let recipeElement = document.createElement("div");
+
+    recipeElement.innerHTML = `
+    <h3>${recipe.title}</h3>
+    <p>Ingredients: </p>
+    <ul>
+        ${recipe.ingredients
+          .map((ingredient) => `<li>${ingredient}</li>`)
+          .join("")}
+    </ul>
+    <p>Instructions:</p>
+    <p>${recipe.instructions}</p>
+    `;
+    recipeList.appendChild(recipeElement);
+  });
 }
 
 fetchData();
