@@ -43,22 +43,17 @@ function renderRecipe(recipe) {
 
   recipeElement.innerHTML = `
     <h3>${recipe.title}</h3>
-    <img src="${
-      recipe.imageURL
-    }"> <!-- Changed to use backticks for template literals -->
+    <img src="${recipe.imageURL}"> 
     <p>Ingredients: </p>
     <ul>
         ${recipe.ingredients
           .map((ingredient) => `<li>${ingredient}</li>`)
-          .join("")} <!-- Changed to use backticks for template literals -->
+          .join("")} 
     </ul>
     <p>Instructions:</p>
-    <p>${
-      recipe.instructions
-    }</p> <!-- Changed to use backticks for template literals -->
+    <p>${recipe.instructions}</p> 
     <span class="stars" data-id="${recipe.id}">
             ${"<span>☆</span>".repeat(5)}
- <!-- Added this line to create star elements for each star -->
     </span>
     <button class="edit-btn">Edit</button>
   `;
@@ -105,12 +100,10 @@ function editRecipe(recipe, recipeElement) {
       <ul>
           ${recipe.ingredients
             .map((ingredient) => `<li>${ingredient}</li>`)
-            .join("")} <!-- Changed to use backticks for template literals -->
+            .join("")} 
       </ul>
       <p>Instructions:</p>
-      <p>${
-        recipe.instructions
-      }</p> <!-- Changed to use backticks for template literals -->
+      <p>${recipe.instructions}</p> 
       <span class="stars" data-id="${recipe.id}">
               ${"<span>☆</span>".repeat(5)}
       </span>
@@ -140,19 +133,15 @@ function renderSaved() {
 
     recipeElement.innerHTML = `
       <h3>${recipe.title}</h3>
-      <img src="${
-        recipe.imageURL
-      }"> <!-- Changed to use backticks for template literals -->
+      <img src="${recipe.imageURL}"> 
       <p>Ingredients: </p>
       <ul>
           ${recipe.ingredients
             .map((ingredient) => `<li>${ingredient}</li>`)
-            .join("")} <!-- Changed to use backticks for template literals -->
+            .join("")} 
       </ul>
       <p>Instructions:</p>
-      <p>${
-        recipe.instructions
-      }</p> <!-- Changed to use backticks for template literals -->
+      <p>${recipe.instructions}</p> 
       <span class="stars" data-id="${recipe.id}">
       ${"<span>☆</span>".repeat(5)}
       </span>
@@ -189,12 +178,17 @@ function initializeStarRatings() {
   const starsContainers = document.querySelectorAll(".stars");
 
   starsContainers.forEach((container) => {
+    // Converting the star children elements in the star-container into an array
     const stars = Array.from(container.children);
+    //Listening for clicks on each star
     stars.forEach((star, index) => {
       star.addEventListener("click", function () {
+        //rating based on the index of the star clicked
         const rating = index + 1;
 
+        //removing the filled state so each new click can update the state
         stars.forEach((s) => s.classList.remove("filled"));
+        //then adding filled class according to the index of the star clicked
 
         for (let i = 0; i < rating; i++) {
           stars[i].classList.add("filled");
