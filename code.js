@@ -90,8 +90,19 @@ function editRecipe(recipe, index) {
       .value.split(", ");
     recipe.instructions = document.getElementById("instructions").value;
 
-    recipeList.innerHTML = "";
-    fetchData();
+    let recipeElement = document.querySelector(`[data-index='${index}']`);
+    recipeElement.innerHTML = `
+      <h3>${recipe.title}</h3>
+      <p>Ingredients: </p>
+      <ul>
+          ${recipe.ingredients
+            .map((ingredient) => `<li>${ingredient}</li>`)
+            .join("")}
+      </ul>
+      <p>Instructions:</p>
+      <p>${recipe.instructions}</p>
+      <button class="edit-btn">Edit</button>
+    `;
 
     saveBtn.remove();
 
