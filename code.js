@@ -52,13 +52,15 @@ async function fetchData() {
     <p>Instructions:</p>
     <p>${recipe.instructions}</p>
   <span class="stars" data-id="${recipe.id}">
-      ★☆☆☆☆
+      ☆☆☆☆☆
     </span>
    <button class="edit-btn">Edit</button>
     `;
 
     recipeList.appendChild(recipeElement);
   });
+
+  initializeStarRatings();
 
   document.querySelectorAll(".edit-btn").forEach((button) => {
     button.addEventListener("click", function () {
@@ -102,7 +104,7 @@ function editRecipe(recipe, index) {
       <p>Instructions:</p>
       <p>${recipe.instructions}</p>
        <span class="stars" data-id="${recipe.id}">
-      ★☆☆☆☆
+      ☆☆☆☆☆
     </span>
       <button class="edit-btn">Edit</button>
     `;
@@ -132,7 +134,7 @@ function renderSaved() {
         <p>Instructions:</p>
         <p>${recipe.instructions}</p>
          <span class="stars" data-id="${recipe.id}">
-          ★☆☆☆☆
+          ☆☆☆☆☆
         </span>
         `;
     recipeList.appendChild(recipeElement);
@@ -171,20 +173,21 @@ function initializeStarRatings() {
         // Determine the rating based on the clicked star
         const rating = index + 1;
 
-        // Highlight the selected stars
-        stars.forEach((s, i) => (s.style.color = i < rating ? "gold" : ""));
+        // Clear existing filled class from all stars
+        stars.forEach((s) => s.classList.remove("filled"));
 
-        // log the rating maybe add other saving functionality later
+        // Add 'filled' class to the selected stars
+        for (let i = 0; i < rating; i++) {
+          stars[i].classList.add("filled");
+        }
+
+        // Log the rating
         console.log(`Recipe ${container.dataset.id} rated with ${rating}/5`);
       });
     });
   });
 }
 
-// Call initializeStarRatings after fetchData completes
-fetchData().then(() => {
-  initializeStarRatings();
-});
 //Shanti
 
 // Extra >>>>>>>>>>>>>>> Uttråkad Emelie
