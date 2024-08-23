@@ -101,6 +101,9 @@ function editRecipe(recipe, index) {
       </ul>
       <p>Instructions:</p>
       <p>${recipe.instructions}</p>
+       <span class="stars" data-id="${recipe.id}">
+      ★☆☆☆☆
+    </span>
       <button class="edit-btn">Edit</button>
     `;
 
@@ -158,7 +161,6 @@ recipeForm.addEventListener("submit", function (e) {
 
 //The rating functionality //Petra
 
-<<<<<<< HEAD
 function initializeStarRatings() {
   const starsContainers = document.querySelectorAll(".stars");
 
@@ -185,8 +187,6 @@ fetchData().then(() => {
 });
 //Shanti
 
-=======
->>>>>>> origin/main
 // Extra >>>>>>>>>>>>>>> Uttråkad Emelie
 // söka efter recept
 // användarregistrering
