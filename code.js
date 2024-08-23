@@ -18,17 +18,22 @@
 //Adam
 
 let recipeList = document.getElementById("recipeList");
+// flyttar ut deklareringen av recipes så det blir globalt
+let recipes = [];
 
 async function fetchData() {
   let res = await fetch("./recipes.json");
   let result = await res.json();
 
-  let recipes = result.recipes;
+  recipes = result.recipes;
 
   console.log(recipes);
 
-  recipes.forEach((recipe) => {
+  //TODO: om man redigerar, så ta bort knappen "add recipe"
+
+  recipes.forEach((recipe, index) => {
     let recipeElement = document.createElement("div");
+    recipeElement.setAttribute("data-index", index);
 
     recipeElement.innerHTML = `
     <h3>${recipe.title}</h3>
@@ -40,8 +45,48 @@ async function fetchData() {
     </ul>
     <p>Instructions:</p>
     <p>${recipe.instructions}</p>
+   <button class="edit-btn">Edit</button>
     `;
+
     recipeList.appendChild(recipeElement);
+  });
+
+  document.querySelectorAll(".edit-btn").forEach((button) => {
+    button.addEventListener("click", function () {
+      let recipeElement = this.parentElement;
+      let index = recipeElement.getAttribute("data-index");
+      editRecipe(recipes[index], index);
+    });
+  });
+}
+
+function editRecipe(recipe, index) {
+  document.getElementById("title").value = recipe.title;
+  document.getElementById("ingredients").value = recipe.ingredients.join(", ");
+  document.getElementById("instructions").value = recipe.instructions;
+
+  let saveBtn = document.createElement("button");
+  saveBtn.textContent = "Save";
+  saveBtn.setAttribute("id", "saveBtn");
+
+  let form = document.getElementById("form");
+  form.appendChild(saveBtn);
+
+  saveBtn.addEventListener("click", function (event) {
+    event.preventDefault();
+
+    recipe.title = document.getElementById("title").value;
+    recipe.ingredients = document
+      .getElementById("ingredients")
+      .value.split(", ");
+    recipe.instructions = document.getElementById("instructions").value;
+
+    recipeList.innerHTML = "";
+    fetchData();
+
+    saveBtn.remove();
+
+    form.reset();
   });
 }
 
@@ -49,7 +94,7 @@ fetchData();
 
 //Petra
 
-//Shanti
+//Shanti (redigera recept)
 
 // Extra >>>>>>>>>>>>>>> Uttråkad Emelie
 // söka efter recept
