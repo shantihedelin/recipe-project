@@ -10,7 +10,29 @@
 
 // - Shanti: Kunna ändra/redigera ett recept
 
-// - Shanti: localstorage - behåll recepten på sidan ???
+// - Om det finns tid: Shanti: localstorage - behåll recepten på sidan ???
+
+// Emelie
+// Här är min kod
+
+//Adam
+
+function fetchData() {
+  fetch("./recipes.json")
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error(`Error: ${res.status}`);
+      }
+      return res.json();
+    })
+    .then((data) => console.log(data));
+}
+
+fetchData();
+
+//Petra
+
+//Shanti
 
 // Extra >>>>>>>>>>>>>>> Uttråkad Emelie
 // söka efter recept
