@@ -4,6 +4,63 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Penné</title>
+    <link rel="stylesheet" href="style.css" />
   </head>
-  <body></body>
+  <body>
+    <div>
+      <nav>
+        <h2>Recipe App</h2>
+      </nav>
+      <h1>Recipe App - Penné</h1>
+      <form id="form">
+        <input type="text" id="title" placeholder="Name..." required />
+
+        <textarea
+          type="text"
+          id="ingredients"
+          rows="4"
+          placeholder="Ingredients..."
+          required
+        ></textarea>
+
+        <textarea
+          type="text"
+          id="instructions"
+          rows="4"
+          placeholder="Instructions..."
+          required
+        ></textarea>
+        <input type="file" id="image" accept="image/png, image/jpeg" required />
+
+        <button type="submit" id="submitBtn">Add recipe</button>
+      </form>
+      <div>lista</div>
+    </div>
+
+    <script src="code.js"></script>
+  </body>
 </html>
+
+<!-- {
+  "id": 2,
+  "title": "Classic Margherita Pizza",
+  "ingredients": [
+    "1 pizza dough",
+    "200g tomato sauce",
+    "200g mozzarella cheese",
+    "Fresh basil leaves",
+    "2 tbsp olive oil",
+    "Salt"
+  ],
+  "instructions": [
+    "Preheat the oven to 220°C.",
+    "Roll out the dough on a floured surface.",
+    "Spread the tomato sauce evenly over the dough.",
+    "Tear the mozzarella into pieces and scatter over the pizza.",
+    "Drizzle with olive oil and season with salt.",
+    "Bake in the oven for 10-12 minutes, until the crust is golden and the cheese is bubbling.",
+    "Remove from the oven and scatter fresh basil leaves over the pizza.",
+    "Slice and serve immediately."
+  ],
+  "imageURL": "https://example.com/images/margherita-pizza.jpg"
+}, -->
