@@ -53,7 +53,7 @@ function renderRecipe(recipe) {
     <p>Instructions:</p>
     <p>${recipe.instructions}</p>
   <span class="stars" data-id="${recipe.id}">
-      ★☆☆☆☆
+      ☆☆☆☆☆
     </span>
    <button class="edit-btn">Edit</button>
     `;
@@ -66,6 +66,8 @@ function renderRecipe(recipe) {
 
     recipeList.appendChild(recipeElement);
   };
+
+  initializeStarRatings();
 
 
 function editRecipe(recipe, recipeElement) {
@@ -103,6 +105,9 @@ function editRecipe(recipe, recipeElement) {
       </ul>
       <p>Instructions:</p>
       <p>${recipe.instructions}</p>
+       <span class="stars" data-id="${recipe.id}">
+      ☆☆☆☆☆
+    </span>
       <button class="edit-btn">Edit</button>
     `;
 
@@ -137,6 +142,9 @@ function renderSaved() {
         </ul>
         <p>Instructions:</p>
         <p>${recipe.instructions}</p>
+         <span class="stars" data-id="${recipe.id}">
+          ☆☆☆☆☆
+        </span>
         `;
     recipeList.appendChild(recipeElement);
   });
@@ -162,7 +170,34 @@ recipeForm.addEventListener("submit", function (e) {
   console.log(savedRecipes);
 });
 
-//Petra
+//The rating functionality //Petra
+
+function initializeStarRatings() {
+  const starsContainers = document.querySelectorAll(".stars");
+
+  starsContainers.forEach((container) => {
+    const stars = Array.from(container.children);
+    stars.forEach((star, index) => {
+      star.addEventListener("click", function () {
+        // Determine the rating based on the clicked star
+        const rating = index + 1;
+
+        // Clear existing filled class from all stars
+        stars.forEach((s) => s.classList.remove("filled"));
+
+        // Add 'filled' class to the selected stars
+        for (let i = 0; i < rating; i++) {
+          stars[i].classList.add("filled");
+        }
+
+        // Log the rating
+        console.log(`Recipe ${container.dataset.id} rated with ${rating}/5`);
+      });
+    });
+  });
+}
+
+//Shanti
 
 // Extra >>>>>>>>>>>>>>> Uttråkad Emelie
 // söka efter recept

@@ -10,3 +10,12 @@ body {
   padding: 20px;
   border-radius: 20px;
 }
+.stars:not(.filled) {
+  cursor: pointer;
+  font-size: 24px;
+}
+
+.stars.filled {
+  color: gold;
+  font-size: 34px;
+}
