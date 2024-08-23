@@ -48,6 +48,9 @@ async function fetchData() {
     </ul>
     <p>Instructions:</p>
     <p>${recipe.instructions}</p>
+  <span class="stars" data-id="${recipe.id}">
+      ★☆☆☆☆
+    </span>
     `;
     recipeList.appendChild(recipeElement);
   });
