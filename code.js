@@ -17,15 +17,15 @@
 
 //Adam
 
-function fetchData() {
-  fetch("./recipes.json")
-    .then((res) => {
-      if (!res.ok) {
-        throw new Error(`Error: ${res.status}`);
-      }
-      return res.json();
-    })
-    .then((data) => console.log(data));
+let recipeList = document.getElementById("recipeList");
+
+async function fetchData() {
+  let res = await fetch("./recipes.json");
+  let result = await res.json();
+
+  let recipes = result.recipes;
+
+  console.log(recipes);
 }
 
 fetchData();
