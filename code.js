@@ -73,6 +73,9 @@ function renderSaved() {
         </ul>
         <p>Instructions:</p>
         <p>${recipe.instructions}</p>
+         <span class="stars" data-id="${recipe.id}">
+          ★☆☆☆☆
+        </span>
         `;
     recipeList.appendChild(recipeElement);
   });
@@ -98,8 +101,32 @@ recipeForm.addEventListener("submit", function (e) {
   console.log(savedRecipes);
 });
 
-//Petra
+//The rating functionality //Petra
 
+function initializeStarRatings() {
+  const starsContainers = document.querySelectorAll(".stars");
+
+  starsContainers.forEach((container) => {
+    const stars = Array.from(container.children);
+    stars.forEach((star, index) => {
+      star.addEventListener("click", function () {
+        // Determine the rating based on the clicked star
+        const rating = index + 1;
+
+        // Highlight the selected stars
+        stars.forEach((s, i) => (s.style.color = i < rating ? "gold" : ""));
+
+        // log the rating maybe add other saving functionality later
+        console.log(`Recipe ${container.dataset.id} rated with ${rating}/5`);
+      });
+    });
+  });
+}
+
+// Call initializeStarRatings after fetchData completes
+fetchData().then(() => {
+  initializeStarRatings();
+});
 //Shanti
 
 // Extra >>>>>>>>>>>>>>> Uttråkad Emelie
