@@ -33,42 +33,46 @@ async function fetchData() {
   recipes.forEach((recipe) => {
     renderRecipe(recipe);
   });
+  initializeStarRatings();
 }
 
 function renderRecipe(recipe) {
-    let recipeElement = document.createElement("div");
+  let recipeElement = document.createElement("div");
 
   //TODO: edit button på nya skapade recept?
 
-
-    recipeElement.innerHTML = `
+  recipeElement.innerHTML = `
     <h3>${recipe.title}</h3>
-    <img src=${recipe.imageURL}>
+    <img src="${
+      recipe.imageURL
+    }"> <!-- Changed to use backticks for template literals -->
     <p>Ingredients: </p>
     <ul>
         ${recipe.ingredients
           .map((ingredient) => `<li>${ingredient}</li>`)
-          .join("")}
+          .join("")} <!-- Changed to use backticks for template literals -->
     </ul>
     <p>Instructions:</p>
-    <p>${recipe.instructions}</p>
-  <span class="stars" data-id="${recipe.id}">
-      ☆☆☆☆☆
+    <p>${
+      recipe.instructions
+    }</p> <!-- Changed to use backticks for template literals -->
+    <span class="stars" data-id="${recipe.id}">
+            ${"<span>☆</span>".repeat(5)}
+ <!-- Added this line to create star elements for each star -->
     </span>
-   <button class="edit-btn">Edit</button>
-    `;
+    <button class="edit-btn">Edit</button>
+  `;
 
-    recipeElement
-      .querySelector(".edit-btn")
-      .addEventListener("click", function () {
-        editRecipe(recipe, recipeElement);
-      });
+  recipeElement
+    .querySelector(".edit-btn")
+    .addEventListener("click", function () {
+      editRecipe(recipe, recipeElement);
+    });
 
-    recipeList.appendChild(recipeElement);
-  };
+  recipeList.appendChild(recipeElement);
+}
 
-  initializeStarRatings();
-
+initializeStarRatings();
 
 function editRecipe(recipe, recipeElement) {
   document.getElementById("title").value = recipe.title;
@@ -76,7 +80,7 @@ function editRecipe(recipe, recipeElement) {
   document.getElementById("instructions").value = recipe.instructions;
 
   let addRecipeBtn = document.getElementById("submitBtn");
-  addRecipeBtn.style.display = "none"; 
+  addRecipeBtn.style.display = "none";
 
   let existingSaveBtn = document.getElementById("saveBtn");
   if (existingSaveBtn) {
@@ -101,13 +105,15 @@ function editRecipe(recipe, recipeElement) {
       <ul>
           ${recipe.ingredients
             .map((ingredient) => `<li>${ingredient}</li>`)
-            .join("")}
+            .join("")} <!-- Changed to use backticks for template literals -->
       </ul>
       <p>Instructions:</p>
-      <p>${recipe.instructions}</p>
-       <span class="stars" data-id="${recipe.id}">
-      ☆☆☆☆☆
-    </span>
+      <p>${
+        recipe.instructions
+      }</p> <!-- Changed to use backticks for template literals -->
+      <span class="stars" data-id="${recipe.id}">
+              ${"<span>☆</span>".repeat(5)}
+      </span>
       <button class="edit-btn">Edit</button>
     `;
 
@@ -118,6 +124,7 @@ function editRecipe(recipe, recipeElement) {
       .addEventListener("click", function () {
         editRecipe(recipe, recipeElement);
       });
+    initializeStarRatings();
 
     saveBtn.remove();
     addRecipeBtn.style.display = "block";
@@ -132,22 +139,28 @@ function renderSaved() {
     let recipeElement = document.createElement("div");
 
     recipeElement.innerHTML = `
-        <h3>${recipe.title}</h3>
-        <img src=${recipe.imageURL}>
-        <p>Ingredients: </p>
-        <ul>
-            ${recipe.ingredients
-              .map((ingredient) => `<li>${ingredient}</li>`)
-              .join("")}
-        </ul>
-        <p>Instructions:</p>
-        <p>${recipe.instructions}</p>
-         <span class="stars" data-id="${recipe.id}">
-          ☆☆☆☆☆
-        </span>
-        `;
+      <h3>${recipe.title}</h3>
+      <img src="${
+        recipe.imageURL
+      }"> <!-- Changed to use backticks for template literals -->
+      <p>Ingredients: </p>
+      <ul>
+          ${recipe.ingredients
+            .map((ingredient) => `<li>${ingredient}</li>`)
+            .join("")} <!-- Changed to use backticks for template literals -->
+      </ul>
+      <p>Instructions:</p>
+      <p>${
+        recipe.instructions
+      }</p> <!-- Changed to use backticks for template literals -->
+      <span class="stars" data-id="${recipe.id}">
+      ${"<span>☆</span>".repeat(5)}
+      </span>
+    `;
+
     recipeList.appendChild(recipeElement);
   });
+  initializeStarRatings();
 }
 
 recipeForm.addEventListener("submit", function (e) {
@@ -179,18 +192,14 @@ function initializeStarRatings() {
     const stars = Array.from(container.children);
     stars.forEach((star, index) => {
       star.addEventListener("click", function () {
-        // Determine the rating based on the clicked star
         const rating = index + 1;
 
-        // Clear existing filled class from all stars
         stars.forEach((s) => s.classList.remove("filled"));
 
-        // Add 'filled' class to the selected stars
         for (let i = 0; i < rating; i++) {
           stars[i].classList.add("filled");
         }
 
-        // Log the rating
         console.log(`Recipe ${container.dataset.id} rated with ${rating}/5`);
       });
     });
