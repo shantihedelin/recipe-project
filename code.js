@@ -11,6 +11,52 @@
 // Emelie
 // Här är min kod
 
+//Get form
+// const form = document.getElementById("form");
+//Get all user inputs
+const allInputEls = document.querySelectorAll("input, textarea");
+
+//validate
+// form.addEventListener("submit", function (e) {
+//   //prevent function from executing
+//   e.preventDefault();
+
+//   let formIsFilled = true;
+
+//   //remove old error messages
+//   document
+//     .querySelectorAll(".error-message")
+//     .forEach((errorEl) => errorEl.remove());
+
+//   for (let i = 0; i < allInputEls.length; i++) {
+//     const input = allInputEls[i];
+
+//     if (input.value.trim() === "") {
+//       formIsFilled = false;
+//       const errorMessageEl = document.createElement("div");
+//       errorMessageEl.classList.add("error-message");
+//       errorMessageEl.textContent = `Please fill in ${input.placeholder.toLowerCase()}`;
+//       input.insertAdjacentElement("afterend", errorMessageEl);
+//     }
+//   }
+
+//   if (formIsFilled) {
+//     console.log("Form is filled, Submit!");
+//   } else {
+//     console.log("Form is not filled correctly");
+//     return;
+//   }
+// });
+
+//Remove recipe
+function deleteRecipe(id, recipeElement) {
+  //Tar bort recipe from savedRecipes
+  savedRecipes = savedRecipes.filter((recipe) => recipe.id !== id);
+
+  // Tar bort recipe från the DOM
+  recipeElement.remove();
+}
+
 //Adam
 
 let recipeList = document.getElementById("recipeList");
@@ -40,6 +86,9 @@ function renderRecipe(recipe) {
   let recipeElement = document.createElement("div");
 
   //TODO: edit button på nya skapade recept?
+  // Jag la till functionalitet för deletebtn här/ Emelie
+  // lägger till receptets id i html:n
+  recipeElement.dataset.id = recipe.id;
 
   recipeElement.innerHTML = `
     <h3>${recipe.title}</h3>
@@ -56,6 +105,7 @@ function renderRecipe(recipe) {
             ${"<span>☆</span>".repeat(5)}
     </span>
     <button class="edit-btn">Edit</button>
+    <button class="delete-btn">Delete</button>
   `;
 
   recipeElement
@@ -64,6 +114,11 @@ function renderRecipe(recipe) {
       editRecipe(recipe, recipeElement);
     });
 
+  recipeElement
+    .querySelector(".delete-btn")
+    .addEventListener("click", function () {
+      deleteRecipe(recipe.id, recipeElement);
+    });
   recipeList.appendChild(recipeElement);
 }
 
@@ -154,22 +209,49 @@ function renderSaved() {
 
 recipeForm.addEventListener("submit", function (e) {
   e.preventDefault();
-  let recipeIng = ingredientsInput.value.split(/\r?\n/);
-  let recipeIns = instructionsInput.value.split(/\r?\n/);
+  // La in min kod här// Emelie
+  let formIsFilled = true;
 
-  let recipeObject = {
-    id: Math.floor(Math.random() * 100),
-    imageURL: imageInput.value,
-    ingredients: recipeIng,
-    instructions: recipeIns,
-    title: recipeTitleInput.value,
-  };
+  //remove old error messages
+  document
+    .querySelectorAll(".error-message")
+    .forEach((errorEl) => errorEl.remove());
 
-  recipeForm.reset();
+  for (let i = 0; i < allInputEls.length; i++) {
+    const input = allInputEls[i];
 
-  savedRecipes.push(recipeObject);
-  renderSaved();
-  console.log(savedRecipes);
+    if (input.value.trim() === "") {
+      formIsFilled = false;
+      const errorMessageEl = document.createElement("div");
+      errorMessageEl.classList.add("error-message");
+      errorMessageEl.textContent = `Please fill in ${input.placeholder.toLowerCase()}`;
+      input.insertAdjacentElement("afterend", errorMessageEl);
+    }
+  }
+
+  if (formIsFilled) {
+    console.log("Form is filled, Submit!");
+
+    let recipeIng = ingredientsInput.value.split(/\r?\n/);
+    let recipeIns = instructionsInput.value.split(/\r?\n/);
+
+    let recipeObject = {
+      id: Math.floor(Math.random() * 100),
+      imageURL: imageInput.value,
+      ingredients: recipeIng,
+      instructions: recipeIns,
+      title: recipeTitleInput.value,
+    };
+
+    recipeForm.reset();
+
+    savedRecipes.push(recipeObject);
+    renderSaved();
+    console.log(savedRecipes);
+  } else {
+    console.log("Form is not filled correctly");
+    return;
+  }
 });
 
 //The rating functionality //Petra
