@@ -1,4 +1,3 @@
-// Emelie
 //Get all user inputs
 const allInputEls = document.querySelectorAll("form input, textarea");
 
@@ -272,7 +271,7 @@ function initializeStarRatings() {
   const starsContainers = document.querySelectorAll(".stars");
 
   starsContainers.forEach((container) => {
-    // Converting the star children elements in the star-container into an array
+    // Converting the stars (children elements) in the star-container into an array
     const stars = Array.from(container.children);
     //Listening for clicks on each star
     stars.forEach((star, index) => {
@@ -287,11 +286,7 @@ function initializeStarRatings() {
         for (let i = 0; i < rating; i++) {
           stars[i].classList.add("filled");
         }
-
-        console.log(`Recipe ${container.dataset.id} rated with ${rating}/5`);
       });
     });
   });
 }
-
-//Shanti
