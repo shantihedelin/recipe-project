@@ -1,16 +1,3 @@
-// - Adam: Skapa och visa upp recepten i er applikation
-
-// - Emelie: Visa upp "error" till användaren om användaren missat fylla i något i formuläret.
-
-// - Done? En bild på maträtten (inte viktigt vilken bild eller att det är en exakt bild på Bolognese utan en bild på pasta är ok, men alla recept ska ha en unik bild, receptet ska inte ha en bild som ett annat recept har)
-
-// - Petra: Betygsättning i applikationen (kan vara till exempel att man ska kunna trycka på en knapp så ökas en siffra kopplat till det receptet)
-
-// - Emelie: Kunna radera ett recept så det inte syns längre i applikationen.
-
-// Emelie
-// Här är min kod
-
 //Get form
 // const form = document.getElementById("form");
 //Get all user inputs
@@ -260,7 +247,7 @@ function initializeStarRatings() {
   const starsContainers = document.querySelectorAll(".stars");
 
   starsContainers.forEach((container) => {
-    // Converting the star children elements in the star-container into an array
+    // Converting the stars (children elements) in the star-container into an array
     const stars = Array.from(container.children);
     //Listening for clicks on each star
     stars.forEach((star, index) => {
@@ -275,17 +262,7 @@ function initializeStarRatings() {
         for (let i = 0; i < rating; i++) {
           stars[i].classList.add("filled");
         }
-
-        console.log(`Recipe ${container.dataset.id} rated with ${rating}/5`);
       });
     });
   });
 }
-
-//Shanti
-
-// Extra >>>>>>>>>>>>>>> Uttråkad Emelie
-// söka efter recept
-// användarregistrering
-// inloggning
-// kategorisering
