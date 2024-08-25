@@ -36,12 +36,11 @@ async function fetchData() {
 }
 
 function renderRecipe(recipe) {
-    let recipeElement = document.createElement("div");
+  let recipeElement = document.createElement("div");
 
   //TODO: edit button på nya skapade recept?
 
-
-    recipeElement.innerHTML = `
+  recipeElement.innerHTML = `
     <h3>${recipe.title}</h3>
     <img src=${recipe.imageURL}>
     <p>Ingredients: </p>
@@ -58,17 +57,16 @@ function renderRecipe(recipe) {
    <button class="edit-btn">Edit</button>
     `;
 
-    recipeElement
-      .querySelector(".edit-btn")
-      .addEventListener("click", function () {
-        editRecipe(recipe, recipeElement);
-      });
+  recipeElement
+    .querySelector(".edit-btn")
+    .addEventListener("click", function () {
+      editRecipe(recipe, recipeElement);
+    });
 
-    recipeList.appendChild(recipeElement);
-  };
+  recipeList.appendChild(recipeElement);
+}
 
-  initializeStarRatings();
-
+initializeStarRatings();
 
 function editRecipe(recipe, recipeElement) {
   document.getElementById("title").value = recipe.title;
@@ -76,7 +74,7 @@ function editRecipe(recipe, recipeElement) {
   document.getElementById("instructions").value = recipe.instructions;
 
   let addRecipeBtn = document.getElementById("submitBtn");
-  addRecipeBtn.style.display = "none"; 
+  addRecipeBtn.style.display = "none";
 
   let existingSaveBtn = document.getElementById("saveBtn");
   if (existingSaveBtn) {
@@ -196,8 +194,6 @@ function initializeStarRatings() {
     });
   });
 }
-
-//Shanti
 
 // Extra >>>>>>>>>>>>>>> Uttråkad Emelie
 // söka efter recept
