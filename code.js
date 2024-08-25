@@ -1,52 +1,6 @@
-// - Adam: Skapa och visa upp recepten i er applikation
-
-// - Emelie: Visa upp "error" till användaren om användaren missat fylla i något i formuläret.
-
-// - Done? En bild på maträtten (inte viktigt vilken bild eller att det är en exakt bild på Bolognese utan en bild på pasta är ok, men alla recept ska ha en unik bild, receptet ska inte ha en bild som ett annat recept har)
-
-// - Petra: Betygsättning i applikationen (kan vara till exempel att man ska kunna trycka på en knapp så ökas en siffra kopplat till det receptet)
-
-// - Emelie: Kunna radera ett recept så det inte syns längre i applikationen.
-
 // Emelie
-// Här är min kod
-
-//Get form
-// const form = document.getElementById("form");
 //Get all user inputs
-const allInputEls = document.querySelectorAll("input, textarea");
-
-//validate
-// form.addEventListener("submit", function (e) {
-//   //prevent function from executing
-//   e.preventDefault();
-
-//   let formIsFilled = true;
-
-//   //remove old error messages
-//   document
-//     .querySelectorAll(".error-message")
-//     .forEach((errorEl) => errorEl.remove());
-
-//   for (let i = 0; i < allInputEls.length; i++) {
-//     const input = allInputEls[i];
-
-//     if (input.value.trim() === "") {
-//       formIsFilled = false;
-//       const errorMessageEl = document.createElement("div");
-//       errorMessageEl.classList.add("error-message");
-//       errorMessageEl.textContent = `Please fill in ${input.placeholder.toLowerCase()}`;
-//       input.insertAdjacentElement("afterend", errorMessageEl);
-//     }
-//   }
-
-//   if (formIsFilled) {
-//     console.log("Form is filled, Submit!");
-//   } else {
-//     console.log("Form is not filled correctly");
-//     return;
-//   }
-// });
+const allInputEls = document.querySelectorAll("form input, textarea");
 
 //Remove recipe
 function deleteRecipe(id, recipeElement) {
@@ -55,6 +9,58 @@ function deleteRecipe(id, recipeElement) {
 
   // Tar bort recipe från the DOM
   recipeElement.remove();
+}
+
+//Sökfält //2.0
+const searchBar = document.getElementById("search-bar");
+const searchResults = document.getElementById("search-results");
+
+searchBar.addEventListener("input", function () {
+  handleSearchTerm(searchBar.value);
+});
+
+// klicka utanför search = hide search results
+document.addEventListener("click", function (e) {
+  if (!searchBar.contains(e.target)) {
+    searchResults.style.display = "none";
+  }
+});
+
+function handleSearchTerm(searchTerm) {
+  searchResults.innerHTML = "";
+  if (searchTerm) {
+    const filteredRecipes = recipes.filter((recipe) =>
+      recipe.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    filteredRecipes.forEach((recipe) => {
+      const resultItem = document.createElement("div");
+      resultItem.innerHTML = `
+    <h3>${recipe.title}</h3>
+    <img src="${recipe.imageURL}"> 
+    <p>Ingredients: </p>
+    <ul>
+        ${recipe.ingredients
+          .map((ingredient) => `<li>${ingredient}</li>`)
+          .join("")} 
+    </ul>
+    <p>Instructions:</p>
+    <p>${recipe.instructions}</p> 
+    
+   
+  `;
+      resultItem.addEventListener("click", () => {
+        displayRecipe(recipe);
+      });
+      searchResults.appendChild(resultItem);
+    });
+    searchResults.style.display = "block";
+
+    if (filteredRecipes.length === 0) {
+      searchResults.textContent = "Sorry! We do not have that recipe :(";
+    }
+  } else {
+    searchResults.style.display = "none";
+  }
 }
 
 //Adam
@@ -87,6 +93,7 @@ function renderRecipe(recipe) {
 
   //TODO: edit button på nya skapade recept?
   // Jag la till functionalitet för deletebtn här/ Emelie
+
   // lägger till receptets id i html:n
   recipeElement.dataset.id = recipe.id;
 
@@ -224,8 +231,13 @@ recipeForm.addEventListener("submit", function (e) {
       formIsFilled = false;
       const errorMessageEl = document.createElement("div");
       errorMessageEl.classList.add("error-message");
-      errorMessageEl.textContent = `Please fill in ${input.placeholder.toLowerCase()}`;
-      input.insertAdjacentElement("afterend", errorMessageEl);
+      errorMessageEl.style.marginTop = "10px";
+      if (!input.placeholder) {
+        errorMessageEl.textContent = "Please upload a photo";
+      } else {
+        errorMessageEl.textContent = `Please fill in the ${input.placeholder.toLowerCase()}`;
+      }
+      input.insertAdjacentElement("beforebegin", errorMessageEl);
     }
   }
 
@@ -283,9 +295,3 @@ function initializeStarRatings() {
 }
 
 //Shanti
-
-// Extra >>>>>>>>>>>>>>> Uttråkad Emelie
-// söka efter recept
-// användarregistrering
-// inloggning
-// kategorisering
