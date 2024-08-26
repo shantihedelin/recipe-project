@@ -91,7 +91,6 @@ async function fetchData() {
 
 function renderRecipe(recipe) {
   let recipeElement = document.createElement("div");
-  let recipeElement = document.createElement("div");
 
   //TODO: edit button på nya skapade recept?
   // Jag la till functionalitet för deletebtn här/ Emelie
@@ -117,7 +116,7 @@ function renderRecipe(recipe) {
     <button class="delete-btn">Delete</button>
   `;
 
-  // här väljs alla knappar som har klassen "edit-btn"
+  // här väljs alla element(knappar) som har klassen "edit-btn"
   // och en eventListener läggs till alla sådana knappar
   // och funktionen editRecipe körs när man klickar på dom
   recipeElement
@@ -160,6 +159,7 @@ function editRecipe(recipe, recipeElement) {
   saveBtn.addEventListener("click", function (event) {
     event.preventDefault();
 
+    // det som har skrivits in blir det nya värdet
     recipe.title = recipeTitleInput.value;
     recipe.ingredients = ingredientsInput.value.split(", ");
     recipe.instructions = instructionsInput.value;
