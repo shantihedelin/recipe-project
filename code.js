@@ -1,15 +1,66 @@
-// - Adam: Skapa och visa upp recepten i er applikation
+//Get all user inputs
+const allInputEls = document.querySelectorAll("form input, textarea");
 
-// - Emelie: Visa upp "error" till användaren om användaren missat fylla i något i formuläret.
+//Remove recipe
+function deleteRecipe(id, recipeElement) {
+  //Tar bort recipe from savedRecipes
+  savedRecipes = savedRecipes.filter((recipe) => recipe.id !== id);
 
-// - Done? En bild på maträtten (inte viktigt vilken bild eller att det är en exakt bild på Bolognese utan en bild på pasta är ok, men alla recept ska ha en unik bild, receptet ska inte ha en bild som ett annat recept har)
+  // Tar bort recipe från the DOM
+  recipeElement.remove();
+}
 
-// - Petra: Betygsättning i applikationen (kan vara till exempel att man ska kunna trycka på en knapp så ökas en siffra kopplat till det receptet)
+//Sökfält //2.0
+const searchBar = document.getElementById("search-bar");
+const searchResults = document.getElementById("search-results");
 
-// - Emelie: Kunna radera ett recept så det inte syns längre i applikationen.
+searchBar.addEventListener("input", function () {
+  handleSearchTerm(searchBar.value);
+});
 
-// Emelie
-// Här är min kod
+// klicka utanför search = hide search results
+document.addEventListener("click", function (e) {
+  if (!searchBar.contains(e.target)) {
+    searchResults.style.display = "none";
+  }
+});
+
+function handleSearchTerm(searchTerm) {
+  searchResults.innerHTML = "";
+  if (searchTerm) {
+    const filteredRecipes = recipes.filter((recipe) =>
+      recipe.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    filteredRecipes.forEach((recipe) => {
+      const resultItem = document.createElement("div");
+      resultItem.innerHTML = `
+    <h3>${recipe.title}</h3>
+    <img src="${recipe.imageURL}"> 
+    <p>Ingredients: </p>
+    <ul>
+        ${recipe.ingredients
+          .map((ingredient) => `<li>${ingredient}</li>`)
+          .join("")} 
+    </ul>
+    <p>Instructions:</p>
+    <p>${recipe.instructions}</p> 
+    
+   
+  `;
+      resultItem.addEventListener("click", () => {
+        displayRecipe(recipe);
+      });
+      searchResults.appendChild(resultItem);
+    });
+    searchResults.style.display = "block";
+
+    if (filteredRecipes.length === 0) {
+      searchResults.textContent = "Sorry! We do not have that recipe :(";
+    }
+  } else {
+    searchResults.style.display = "none";
+  }
+}
 
 //Adam
 
@@ -35,29 +86,36 @@ async function fetchData() {
   recipes.forEach((recipe) => {
     renderRecipe(recipe);
   });
+  initializeStarRatings();
 }
 
 function renderRecipe(recipe) {
   let recipeElement = document.createElement("div");
+  let recipeElement = document.createElement("div");
 
   //TODO: edit button på nya skapade recept?
+  // Jag la till functionalitet för deletebtn här/ Emelie
+
+  // lägger till receptets id i html:n
+  recipeElement.dataset.id = recipe.id;
 
   recipeElement.innerHTML = `
     <h3>${recipe.title}</h3>
-    <img src=${recipe.imageURL}>
+    <img src="${recipe.imageURL}"> 
     <p>Ingredients: </p>
     <ul>
         ${recipe.ingredients
           .map((ingredient) => `<li>${ingredient}</li>`)
-          .join("")}
+          .join("")} 
     </ul>
     <p>Instructions:</p>
-    <p>${recipe.instructions}</p>
-  <span class="stars" data-id="${recipe.id}">
-      ☆☆☆☆☆
+    <p>${recipe.instructions}</p> 
+    <span class="stars" data-id="${recipe.id}">
+            ${"<span>☆</span>".repeat(5)}
     </span>
-   <button class="edit-btn">Edit</button>
-    `;
+    <button class="edit-btn">Edit</button>
+    <button class="delete-btn">Delete</button>
+  `;
 
   // här väljs alla knappar som har klassen "edit-btn"
   // och en eventListener läggs till alla sådana knappar
@@ -115,13 +173,13 @@ function editRecipe(recipe, recipeElement) {
       <ul>
           ${recipe.ingredients
             .map((ingredient) => `<li>${ingredient}</li>`)
-            .join("")}
+            .join("")} 
       </ul>
       <p>Instructions:</p>
-      <p>${recipe.instructions}</p>
-       <span class="stars" data-id="${recipe.id}">
-      ☆☆☆☆☆
-    </span>
+      <p>${recipe.instructions}</p> 
+      <span class="stars" data-id="${recipe.id}">
+              ${"<span>☆</span>".repeat(5)}
+      </span>
       <button class="edit-btn">Edit</button>
     `;
 
@@ -132,6 +190,7 @@ function editRecipe(recipe, recipeElement) {
       .addEventListener("click", function () {
         editRecipe(recipe, recipeElement);
       });
+    initializeStarRatings();
 
     saveBtn.remove();
     addRecipeBtn.style.display = "block";
@@ -146,42 +205,76 @@ function renderSaved() {
     let recipeElement = document.createElement("div");
 
     recipeElement.innerHTML = `
-        <h3>${recipe.title}</h3>
-        <img src=${recipe.imageURL}>
-        <p>Ingredients: </p>
-        <ul>
-            ${recipe.ingredients
-              .map((ingredient) => `<li>${ingredient}</li>`)
-              .join("")}
-        </ul>
-        <p>Instructions:</p>
-        <p>${recipe.instructions}</p>
-         <span class="stars" data-id="${recipe.id}">
-          ☆☆☆☆☆
-        </span>
-        `;
+      <h3>${recipe.title}</h3>
+      <img src="${recipe.imageURL}"> 
+      <p>Ingredients: </p>
+      <ul>
+          ${recipe.ingredients
+            .map((ingredient) => `<li>${ingredient}</li>`)
+            .join("")} 
+      </ul>
+      <p>Instructions:</p>
+      <p>${recipe.instructions}</p> 
+      <span class="stars" data-id="${recipe.id}">
+      ${"<span>☆</span>".repeat(5)}
+      </span>
+    `;
+
     recipeList.appendChild(recipeElement);
   });
+  initializeStarRatings();
 }
 
 recipeForm.addEventListener("submit", function (e) {
   e.preventDefault();
-  let recipeIng = ingredientsInput.value.split(/\r?\n/);
-  let recipeIns = instructionsInput.value.split(/\r?\n/);
+  // La in min kod här// Emelie
+  let formIsFilled = true;
 
-  let recipeObject = {
-    id: Math.floor(Math.random() * 100),
-    imageURL: imageInput.value,
-    ingredients: recipeIng,
-    instructions: recipeIns,
-    title: recipeTitleInput.value,
-  };
+  //remove old error messages
+  document
+    .querySelectorAll(".error-message")
+    .forEach((errorEl) => errorEl.remove());
 
-  recipeForm.reset();
+  for (let i = 0; i < allInputEls.length; i++) {
+    const input = allInputEls[i];
 
-  savedRecipes.push(recipeObject);
-  renderSaved();
-  console.log(savedRecipes);
+    if (input.value.trim() === "") {
+      formIsFilled = false;
+      const errorMessageEl = document.createElement("div");
+      errorMessageEl.classList.add("error-message");
+      errorMessageEl.style.marginTop = "10px";
+      if (!input.placeholder) {
+        errorMessageEl.textContent = "Please upload a photo";
+      } else {
+        errorMessageEl.textContent = `Please fill in the ${input.placeholder.toLowerCase()}`;
+      }
+      input.insertAdjacentElement("beforebegin", errorMessageEl);
+    }
+  }
+
+  if (formIsFilled) {
+    console.log("Form is filled, Submit!");
+
+    let recipeIng = ingredientsInput.value.split(/\r?\n/);
+    let recipeIns = instructionsInput.value.split(/\r?\n/);
+
+    let recipeObject = {
+      id: Math.floor(Math.random() * 100),
+      imageURL: imageInput.value,
+      ingredients: recipeIng,
+      instructions: recipeIns,
+      title: recipeTitleInput.value,
+    };
+
+    recipeForm.reset();
+
+    savedRecipes.push(recipeObject);
+    renderSaved();
+    console.log(savedRecipes);
+  } else {
+    console.log("Form is not filled correctly");
+    return;
+  }
 });
 
 //The rating functionality //Petra
@@ -190,29 +283,22 @@ function initializeStarRatings() {
   const starsContainers = document.querySelectorAll(".stars");
 
   starsContainers.forEach((container) => {
+    // Converting the stars (children elements) in the star-container into an array
     const stars = Array.from(container.children);
+    //Listening for clicks on each star
     stars.forEach((star, index) => {
       star.addEventListener("click", function () {
-        // Determine the rating based on the clicked star
+        //rating based on the index of the star clicked
         const rating = index + 1;
 
-        // Clear existing filled class from all stars
+        //removing the filled state so each new click can update the state
         stars.forEach((s) => s.classList.remove("filled"));
+        //then adding filled class according to the index of the star clicked
 
-        // Add 'filled' class to the selected stars
         for (let i = 0; i < rating; i++) {
           stars[i].classList.add("filled");
         }
-
-        // Log the rating
-        console.log(`Recipe ${container.dataset.id} rated with ${rating}/5`);
       });
     });
   });
 }
-
-// Extra >>>>>>>>>>>>>>> Uttråkad Emelie
-// söka efter recept
-// användarregistrering
-// inloggning
-// kategorisering

@@ -10,12 +10,30 @@ body {
   padding: 20px;
   border-radius: 20px;
 }
-.stars:not(.filled) {
+.stars span {
   cursor: pointer;
   font-size: 24px;
 }
 
-.stars.filled {
+.stars span.filled {
   color: gold;
-  font-size: 34px;
+}
+
+#search-bar {
+  margin-bottom: 10px;
+}
+
+#search-results {
+  display: none;
+  max-width: 400px;
+  background-color: rgba(254, 255, 228, 0.531);
+  margin-bottom: 100px;
+  padding: 10px;
+  border: solid;
+}
+
+img {
+  width: 100px;
+  height: 100px;
+  background-color: rgba(0, 0, 0, 0.229);
 }
