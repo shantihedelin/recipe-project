@@ -30,6 +30,8 @@ async function fetchData() {
 
   console.log(recipes);
 
+  // för varje recept körs renderRecipe funktionen
+  // som tar emot recipe som argument
   recipes.forEach((recipe) => {
     renderRecipe(recipe);
   });
@@ -57,35 +59,46 @@ function renderRecipe(recipe) {
    <button class="edit-btn">Edit</button>
     `;
 
+  // här väljs alla knappar som har klassen "edit-btn"
+  // och en eventListener läggs till alla sådana knappar
+  // och funktionen editRecipe körs när man klickar på dom
   recipeElement
     .querySelector(".edit-btn")
     .addEventListener("click", function () {
       editRecipe(recipe, recipeElement);
     });
-
   recipeList.appendChild(recipeElement);
 }
 
 initializeStarRatings();
 
 function editRecipe(recipe, recipeElement) {
+  // värdet som är i fälten är det som det "stod" innan,
+  // så man slipper skriva om allt.
   document.getElementById("title").value = recipe.title;
   document.getElementById("ingredients").value = recipe.ingredients.join(", ");
   document.getElementById("instructions").value = recipe.instructions;
 
+  // om man är i edit läge så dölj "add new recipe knappen"
   let addRecipeBtn = document.getElementById("submitBtn");
   addRecipeBtn.style.display = "none";
 
+  // om det redan finns en save recipe knapp sedan innan,
+  // ta bort den innan, så det inte är två likadana knappar
   let existingSaveBtn = document.getElementById("saveBtn");
   if (existingSaveBtn) {
     existingSaveBtn.remove();
   }
 
+  // skapa en save recipe/changes button
+  // och lägg till den till recipeForm
+  // varje knapp får id:et "saveBtn"
   let saveBtn = document.createElement("button");
   saveBtn.textContent = "Save";
   saveBtn.setAttribute("id", "saveBtn");
   recipeForm.appendChild(saveBtn);
 
+  // spara knappen får en event lyssnare
   saveBtn.addEventListener("click", function (event) {
     event.preventDefault();
 
@@ -93,6 +106,9 @@ function editRecipe(recipe, recipeElement) {
     recipe.ingredients = ingredientsInput.value.split(", ");
     recipe.instructions = instructionsInput.value;
 
+    // receptelementet byggs om med dom uppdaterade
+    // ändringarna för att det ska synas direkt på sidan
+    // efter att man har sparat.
     recipeElement.innerHTML = `
       <h3>${recipe.title}</h3>
       <p>Ingredients: </p>
@@ -110,7 +126,7 @@ function editRecipe(recipe, recipeElement) {
     `;
 
     // en ny eventlyssnare till den nya edit
-    // knappen som följer med efter att man har editat
+    // knappen som följer med efter att man har editat klart
     recipeElement
       .querySelector(".edit-btn")
       .addEventListener("click", function () {
